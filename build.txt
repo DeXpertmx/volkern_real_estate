@@ -1,0 +1,14 @@
+
+> volkern-platform@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.15
+  - Environments: .env.local, .env
+
+   Creating an optimized production build ...
+Failed to compile.
+
+Error: EISDIR: illegal operation on a directory, readlink 'D:\Proyectos Antigravity\website-real-estate\volkern-platform\node_modules\next\dist\pages\_app.js'
+
+
+> Build failed because of webpack errors

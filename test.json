@@ -1,0 +1,47 @@
+{
+  "id": "cmmdmsusg0009me09s1lpey7i",
+  "tenantId": "cmmd7y3zk0000t808mpu8p91p",
+  "nombre": "Apartamento primera línea de playa",
+  "descripcion": "Vivienda con vistas panorámicas al mar. Urbanización con piscina y jardines.",
+  "sku": "ES-MAL-008",
+  "tipo": "producto",
+  "precioBase": 450000,
+  "moneda": "EUR",
+  "categoriaFiscal": "general",
+  "tasaImpuestoId": null,
+  "duracionMinutos": null,
+  "modalidad": null,
+  "unidad": "unidad",
+  "activo": true,
+  "destacado": true,
+  "fechaCreacion": "2026-03-05T15:39:39.617Z",
+  "fechaActualizacion": "2026-03-07T17:09:16.762Z",
+  "customFieldValues": {
+    "zona": "Málaga",
+    "banos": 2,
+    "direccion": "Paseo Marítimo, 15",
+    "amenidades": "Piscina, Vigilancia",
+    "habitaciones": 2,
+    "tipo_inmueble": "Casa",
+    "tipo_operacion": "Venta",
+    "estacionamientos": 1,
+    "estado_propiedad": "Nuevo",
+    "superficie_construida": 90,
+    "disponibilidad_inmueble": "Nueva"
+  },
+  "categorias": [
+    "Inmuebles > Casa > Venta"
+  ],
+  "etiquetas": [
+    "Casa",
+    "Venta"
+  ],
+  "metadata": null,
+  "media": {
+    "imagenes": [
+      "https://abacusai-apps-866230e6534f94c36762fb70-us-west-2.s3.us-west-2.amazonaws.com/9335/public/catalogo/1772903353166-ES-BIO-008.png"
+    ]
+  },
+  "pricing": null,
+  "tasaImpuesto": null
+}
