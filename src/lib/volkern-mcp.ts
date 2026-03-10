@@ -62,19 +62,19 @@ export interface Property {
         availability: string;
     };
     active: boolean;
-    raw?: any;
+    raw?: Record<string, unknown>;
 }
 
 export async function getProperties() {
     const data = await volkernClient.fetchCatalog(100);
-    const rawItems = (data.items || data) as any[];
+    const rawItems = (data.items || data) as Record<string, unknown>[];
 
     // Map original CRM items
-    let mappedProps: Property[] = rawItems.map((item: any) => {
+    let mappedProps: Property[] = rawItems.map((item: Record<string, unknown>) => {
         const getCF = (key: string) => {
             const fields = item.customFieldValues || item.camposPersonalizados || item.customFields || {};
             if (Array.isArray(fields)) {
-                const found = fields.find((f: { key?: string; name?: string; value: any }) => f.key === key || f.name === key);
+                const found = fields.find((f: { key?: string; name?: string; value: unknown }) => f.key === key || f.name === key);
                 return found ? found.value : undefined;
             }
             return fields[key];

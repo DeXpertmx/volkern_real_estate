@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Image from 'next/image';
 import './globals.css';
 import { NextAuthProvider } from '@/components/auth-provider';
 
@@ -22,7 +23,7 @@ export default function RootLayout({
           <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
             <div className="container mx-auto px-4 flex h-20 items-center justify-between">
               <a href="/" className="flex items-center">
-                <img src="/logo.png" alt="Volkern Properties" className="h-12 w-auto" />
+                <Image src="/logo.png" alt="Volkern Properties" width={150} height={48} className="h-12 w-auto" />
               </a>
               <nav className="hidden md:flex gap-8">
                 <a href="#inicio" className="text-sm font-medium hover:text-blue-600 transition-colors">Inicio</a>
@@ -43,7 +44,7 @@ export default function RootLayout({
             <div className="container mx-auto px-4 grid md:grid-cols-4 gap-8">
               <div className="md:col-span-2">
                 <div className="flex items-center mb-6">
-                  <img src="/logo.png" alt="Volkern" className="h-10 brightness-0 invert" />
+                  <Image src="/logo.png" alt="Volkern" width={120} height={40} className="h-10 w-auto brightness-0 invert" />
                 </div>
                 <p className="max-w-md">Expertos en el mercado inmobiliario premium, ofreciendo soluciones personalizadas y confianza en cada transacción.</p>
               </div>

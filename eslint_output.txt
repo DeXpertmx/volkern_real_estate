@@ -1,0 +1,14 @@
+[0m[0m
+[0m[4mD:\Proyectos Antigravity\website-real-estate\volkern-platform\src\components\admin\PropertyForm.tsx[24m[0m
+[0m   [2m6:87[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m25:30[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m34:36[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4mD:\Proyectos Antigravity\website-real-estate\volkern-platform\src\lib\volkern-mcp.ts[24m[0m
+[0m  [2m65:11[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m70:46[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m73:55[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m77:85[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[31m[1m✖ 7 problems (7 errors, 0 warnings)[22m[39m[0m
+[0m[31m[1m[22m[39m[0m

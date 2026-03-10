@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function PropertyForm({ initialData, isEdit = false }: { initialData?: any, isEdit?: boolean }) {
+export default function PropertyForm({ initialData, isEdit = false }: { initialData?: Record<string, unknown>, isEdit?: boolean }) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ export default function PropertyForm({ initialData, isEdit = false }: { initialD
         featured: initialData?.featured || false,
     });
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
         if (type === 'checkbox') {
             setFormData({ ...formData, [name]: (e.target as HTMLInputElement).checked });
@@ -31,7 +31,7 @@ export default function PropertyForm({ initialData, isEdit = false }: { initialD
         }
     };
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
 

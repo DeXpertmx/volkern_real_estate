@@ -4,20 +4,14 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
-  Bed,
-  Bath,
-  Square,
-  Maximize,
-  Car,
-  CheckCircle,
   MapPin,
-  Search,
-  X
 } from "lucide-react";
+import Image from "next/image";
+import { Property } from "@/lib/volkern-mcp";
 
 export default function Home() {
-  const [allProperties, setAllProperties] = useState<any[]>([]);
-  const [filteredProperties, setFilteredProperties] = useState<any[]>([]);
+  const [allProperties, setAllProperties] = useState<Property[]>([]);
+  const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [filters, setFilters] = useState({
@@ -83,7 +77,7 @@ export default function Home() {
     setFilteredProperties(result);
   };
 
-  const featured = filteredProperties.filter((p: any) => p.featured || p.destacado).slice(0, 3);
+  const featured = filteredProperties.filter((p: Property) => p.featured || (p as unknown as { destacado?: boolean }).destacado).slice(0, 3);
   const displayFeatured = featured.length > 0 ? featured : filteredProperties.filter(p => p.featured).slice(0, 3);
 
   return (
@@ -91,7 +85,7 @@ export default function Home() {
       {/* Hero Section */}
       <section id="inicio" className="relative h-[80vh] min-h-[600px] flex items-center justify-center">
         <div className="absolute inset-0 z-0">
-          <img src="/hero-family.png" alt="Familia feliz" className="w-full h-full object-cover" />
+          <Image src="/hero-family.png" alt="Familia feliz" fill priority className="object-cover" />
           <div className="absolute inset-0 bg-blue-900/60 mix-blend-multiply" />
         </div>
 
@@ -164,8 +158,8 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayFeatured.map((prop: any) => (
-              <PropertyCard key={prop.id || Math.random()} property={prop} />
+            {displayFeatured.map((prop: Property) => (
+              <PropertyCard key={prop.id || Math.random().toString()} property={prop} />
             ))}
             {displayFeatured.length === 0 && (
               <p className="col-span-full text-center text-slate-400 py-10">No hay propiedades destacadas que coincidan.</p>
@@ -194,8 +188,8 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredProperties.map((prop: any) => (
-              <PropertyCard key={prop.id || Math.random()} property={prop} />
+            {filteredProperties.map((prop: Property) => (
+              <PropertyCard key={prop.id || Math.random().toString()} property={prop} />
             ))}
             {filteredProperties.length === 0 && (
               <div className="col-span-full flex flex-col items-center py-20 text-slate-400 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
@@ -220,7 +214,7 @@ export default function Home() {
   );
 }
 
-function PropertyCard({ property }: { property: any }) {
+function PropertyCard({ property }: { property: Property }) {
   // Fallbacks if data mapping missed something
   const isRent = property.operation?.toLowerCase().includes('renta') || property.operation?.toLowerCase().includes('alquiler');
   const price = property.price || 0;
@@ -237,10 +231,11 @@ function PropertyCard({ property }: { property: any }) {
       </div>
 
       <div className="relative h-64 overflow-hidden bg-slate-100">
-        <img
-          src={property.image || (property.media?.imagenes?.[0]) || "https://images.unsplash.com/photo-1560518883-ce09059ee712?auto=format&fit=crop&w=800&q=80"}
-          alt={property.name || property.nombre}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        <Image
+          src={property.image || (((property.raw as unknown as Record<string, unknown>)?.media as Record<string, unknown>)?.imagenes as string[])?.[0] || "https://images.unsplash.com/photo-1560518883-ce09059ee712?auto=format&fit=crop&w=800&q=80"}
+          alt={property.name || (property as unknown as Record<string, unknown>).nombre as string || "Property Image"}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-900/80 to-transparent p-4 pt-12">
           <h3 className="text-white font-bold text-xl truncate">{property.name || property.nombre}</h3>
@@ -260,37 +255,37 @@ function PropertyCard({ property }: { property: any }) {
         <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-sm text-slate-600 mb-6 font-medium">
           <div className="flex items-center gap-2">
             <span className="w-5 h-5 flex items-center justify-center">
-              <img src="/habitaciones.svg" alt="Hab" className="w-4 h-4 opacity-70" />
+              <Image src="/habitaciones.svg" alt="Hab" width={16} height={16} className="opacity-70" />
             </span>
             <span className="truncate">{specs.beds || 0} Hab</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-5 h-5 flex items-center justify-center">
-              <img src="/banos.svg" alt="Baños" className="w-4 h-4 opacity-70" />
+              <Image src="/banos.svg" alt="Baños" width={16} height={16} className="opacity-70" />
             </span>
             <span className="truncate">{specs.baths || 0} Baños</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-5 h-5 flex items-center justify-center">
-              <img src="/superficie_construida.svg" alt="Const." className="w-4 h-4 opacity-70" />
+              <Image src="/superficie_construida.svg" alt="Const." width={16} height={16} className="opacity-70" />
             </span>
             <span className="truncate">{specs.builtArea || 0} m² C.</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-5 h-5 flex items-center justify-center">
-              <img src="/superficie_total.svg" alt="Total" className="w-4 h-4 opacity-70" />
+              <Image src="/superficie_total.svg" alt="Total" width={16} height={16} className="opacity-70" />
             </span>
             <span className="truncate">{specs.totalArea || 0} m² T.</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-5 h-5 flex items-center justify-center">
-              <img src="/estacionamientos.svg" alt="Est." className="w-4 h-4 opacity-70" />
+              <Image src="/estacionamientos.svg" alt="Est." width={16} height={16} className="opacity-70" />
             </span>
             <span className="truncate">{specs.parking || 0} Est.</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-5 h-5 flex items-center justify-center">
-              <img src="/disponibilidad.svg" alt="Disp." className="w-4 h-4" />
+              <Image src="/disponibilidad.svg" alt="Disp." width={16} height={16} />
             </span>
             <span className="truncate font-semibold text-emerald-600">{specs.availability || 'Disponible'}</span>
           </div>
