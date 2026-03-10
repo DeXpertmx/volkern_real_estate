@@ -38,14 +38,14 @@ export async function getMockDB() {
 }
 
 // Helper to write to the DB
-export async function saveMockDB(data: any) {
+export async function saveMockDB(data: { created: unknown[]; updated: unknown[] }) {
     await initDB();
     const { fs } = await getServerModules();
     const dbPath = await getDBPath();
     fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
 }
 
-export async function createMockProperty(property: any) {
+export async function createMockProperty(property: Record<string, unknown>) {
     const db = await getMockDB();
     const newProp = {
         ...property,
@@ -57,11 +57,11 @@ export async function createMockProperty(property: any) {
     return newProp;
 }
 
-export async function updateMockProperty(sku: string, property: any) {
+export async function updateMockProperty(sku: string, property: Record<string, unknown>) {
     const db = await getMockDB();
 
     // Check if we are updating a newly created mock property
-    const createdIndex = db.created.findIndex((p: any) => p.sku === sku || p.id === sku);
+    const createdIndex = db.created.findIndex((p: { sku?: string; id?: string }) => p.sku === sku || p.id === sku);
     if (createdIndex >= 0) {
         db.created[createdIndex] = { ...db.created[createdIndex], ...property };
         await saveMockDB(db);
@@ -69,7 +69,7 @@ export async function updateMockProperty(sku: string, property: any) {
     }
 
     // Otherwise, we are updating an existing CRM property - store in 'updated'
-    const updatedIndex = db.updated.findIndex((p: any) => p.sku === sku || p.id === sku);
+    const updatedIndex = db.updated.findIndex((p: { sku?: string; id?: string }) => p.sku === sku || p.id === sku);
     if (updatedIndex >= 0) {
         db.updated[updatedIndex] = { ...db.updated[updatedIndex], ...property };
     } else {

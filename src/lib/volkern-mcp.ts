@@ -41,16 +41,16 @@ export interface PropertyFilters {
 
 import { getMockDB } from './mock-db';
 
-export async function getProperties(filters?: PropertyFilters) {
+export async function getProperties(_filters?: PropertyFilters) {
     const data = await volkernClient.fetchCatalog(100);
-    const rawItems = data.items || data;
+    const rawItems = (data.items || data) as any[];
 
     // Map original CRM items
     let mappedProps = rawItems.map((item: any) => {
         const getCF = (key: string) => {
             const fields = item.customFieldValues || item.camposPersonalizados || item.customFields || {};
             if (Array.isArray(fields)) {
-                const found = fields.find((f: any) => f.key === key || f.name === key);
+                const found = fields.find((f: { key?: string; name?: string; value: any }) => f.key === key || f.name === key);
                 return found ? found.value : undefined;
             }
             return fields[key];
@@ -92,15 +92,15 @@ export async function getProperties(filters?: PropertyFilters) {
 
         // Apply updates to existing properties
         if (mockDb.updated && mockDb.updated.length > 0) {
-            mappedProps = mappedProps.map((prop: any) => {
-                const update = mockDb.updated.find((u: any) => u.sku === prop.sku || u.id === prop.id);
+            mappedProps = mappedProps.map((prop: { sku?: string; id?: string }) => {
+                const update = mockDb.updated.find((u: { sku?: string; id?: string }) => u.sku === prop.sku || u.id === prop.id);
                 if (update) {
                     return { ...prop, ...update };
                 }
                 return prop;
             });
         }
-    } catch (e) {
+    } catch (_e) {
         console.warn("Failed to merge mock database properties");
     }
 
