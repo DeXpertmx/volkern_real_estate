@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function PropertyForm({ initialData, isEdit = false }: { initialData?: Record<string, unknown>, isEdit?: boolean }) {
+import { Property } from "@/lib/volkern-mcp";
+
+export default function PropertyForm({ initialData, isEdit = false }: { initialData?: Partial<Property>, isEdit?: boolean }) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -16,7 +18,7 @@ export default function PropertyForm({ initialData, isEdit = false }: { initialD
         description: initialData?.description || "",
         beds: initialData?.specs?.beds || "",
         baths: initialData?.specs?.baths || "",
-        area: initialData?.specs?.area || "",
+        area: initialData?.specs?.builtArea || "",
         parking: initialData?.specs?.parking || "",
         active: initialData?.active !== undefined ? initialData.active : true,
         featured: initialData?.featured || false,
@@ -43,7 +45,8 @@ export default function PropertyForm({ initialData, isEdit = false }: { initialD
                 specs: {
                     beds: Number(formData.beds),
                     baths: Number(formData.baths),
-                    area: Number(formData.area),
+                    builtArea: Number(formData.area),
+                    totalArea: Number(formData.area),
                     parking: Number(formData.parking),
                 },
                 active: formData.active,

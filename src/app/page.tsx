@@ -32,8 +32,8 @@ export default function Home() {
       } catch (e) {
         console.error("No properties fetched:", e);
         // Fallback mocks
-        const mocks = [
-          { id: '1', name: 'Apartamento Playa', price: 450000, currency: 'EUR', location: 'Málaga', specs: { beds: 2, baths: 2, builtArea: 90, totalArea: 120, parking: 1, availability: 'Disponible' }, operation: 'venta', image: 'https://images.unsplash.com/photo-1560518883-ce09059ee712?auto=format&fit=crop&w=800&q=80' }
+        const mocks: Property[] = [
+          { id: '1', sku: '1', name: 'Apartamento Playa', description: '', featured: false, price: 450000, currency: 'EUR', location: 'Málaga', address: '', specs: { beds: 2, baths: 2, builtArea: 90, totalArea: 120, parking: 1, availability: 'Disponible' }, operation: 'venta', image: 'https://images.unsplash.com/photo-1560518883-ce09059ee712?auto=format&fit=crop&w=800&q=80', active: true }
         ];
         setAllProperties(mocks);
         setFilteredProperties(mocks);

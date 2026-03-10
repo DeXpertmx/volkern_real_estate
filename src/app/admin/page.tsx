@@ -14,7 +14,7 @@ export default async function AdminDashboard() {
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold text-slate-800">Panel de Administración</h1>
                 <div className="text-sm font-medium bg-blue-100 text-blue-800 px-4 py-2 rounded-full">
-                    Sesión Activa: {(session.user as any)?.email}
+                    Sesión Activa: {(session.user as { email?: string })?.email}
                 </div>
             </div>
 

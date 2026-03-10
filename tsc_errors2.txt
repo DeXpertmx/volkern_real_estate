@@ -1,0 +1,5 @@
+src/app/admin/properties/[id]/edit/page.tsx(27,57): error TS2353: Object literal may only specify known properties, and 'area' does not exist in type '{ beds: number; baths: number; builtArea: number; totalArea: number; parking: number; availability: string; }'.
+src/lib/volkern-mcp.ts(76,9): error TS2322: Type '{ id: string; sku: string; name: string; description: string; featured: {}; price: {}; currency: {}; location: any; address: any; operation: any; image: string; specs: { beds: number; baths: number; builtArea: number; totalArea: number; parking: number; availability: any; }; active: true; raw: Record<...>; }[]' is not assignable to type 'Property[]'.
+  Type '{ id: string; sku: string; name: string; description: string; featured: {}; price: {}; currency: {}; location: any; address: any; operation: any; image: string; specs: { beds: number; baths: number; builtArea: number; totalArea: number; parking: number; availability: any; }; active: true; raw: Record<...>; }' is not assignable to type 'Property'.
+    Types of property 'featured' are incompatible.
+      Type '{}' is not assignable to type 'boolean'.

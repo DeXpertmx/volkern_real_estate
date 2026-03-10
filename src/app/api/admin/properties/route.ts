@@ -4,11 +4,11 @@ import { authOptions } from "@/lib/auth";
 import { getProperties } from "@/lib/volkern-mcp";
 // import prisma from "@/lib/prisma";
 
-export async function GET(request: Request) {
+export async function GET() {
     // 1. Validate Session for Admin
     const session = await getServerSession(authOptions);
 
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
         return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
@@ -28,7 +28,7 @@ import { createMockProperty, updateMockProperty } from "@/lib/mock-db";
 export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
 
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
         return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
         const newProp = await createMockProperty(body);
 
         return NextResponse.json({ success: true, message: "Property created mock", data: newProp });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
 }
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
     const session = await getServerSession(authOptions);
 
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
         return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
@@ -62,7 +62,7 @@ export async function PUT(request: Request) {
         const updatedProp = await updateMockProperty(propIdentifier, body);
 
         return NextResponse.json({ success: true, message: "Property updated mock", data: updatedProp });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
 }

@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 
 export default async function EditPropertyPage({ params }: { params: { id: string } }) {
     const allProps = await getProperties();
-    const property = allProps.find((p: any) => (p.sku || p.id) === params.id);
+    const property = allProps.find((p: { sku?: string; id: string }) => (p.sku || p.id) === params.id);
 
     if (!property) {
         // Mock fallback if not found in MCP data
@@ -24,7 +24,7 @@ export default async function EditPropertyPage({ params }: { params: { id: strin
                         isEdit
                         initialData={{
                             name: 'Apartamento Playa', sku: '1', price: 450000, currency: 'EUR', location: 'Málaga',
-                            specs: { beds: 2, baths: 2, area: 90, parking: 1 }, operation: 'venta',
+                            specs: { beds: 2, baths: 2, builtArea: 90, totalArea: 90, parking: 1, availability: 'Disponible' }, operation: 'venta',
                             description: 'Hermoso apartamento frente al mar.'
                         }}
                     />

@@ -28,17 +28,17 @@ const mockAppointments = [
     }
 ];
 
-export async function GET(request: Request) {
+export async function GET() {
     const session = await getServerSession(authOptions);
 
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
         return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
     try {
         // Return mock appointments for Phase 4
         return NextResponse.json({ success: true, data: mockAppointments });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to fetch appointments" }, { status: 500 });
     }
 }
@@ -46,7 +46,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
 
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
         return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
         }
 
         return NextResponse.json({ success: true, message: "Appointment created mock", data: newApp });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
 }

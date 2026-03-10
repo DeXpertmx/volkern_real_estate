@@ -41,7 +41,7 @@ async function getAppointments(): Promise<Appointment[]> {
 export default async function AdminCalendarPage() {
     const session = await getServerSession(authOptions);
 
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (!session || (session.user as { role?: string })?.role !== "ADMIN") {
         redirect("/api/auth/signin");
     }
 

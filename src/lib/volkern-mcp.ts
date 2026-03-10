@@ -63,9 +63,13 @@ export interface Property {
     };
     active: boolean;
     raw?: Record<string, unknown>;
+    nombre?: string;
+    zona?: string;
+    destacado?: boolean;
 }
 
-export async function getProperties() {
+export async function getProperties(filters?: { type?: string; operation?: string; location?: string }) {
+    if (filters) { /* Prepare for Phase 5 filter pushdown */ }
     const data = await volkernClient.fetchCatalog(100);
     const rawItems = (data.items || data) as Record<string, unknown>[];
 
@@ -77,28 +81,28 @@ export async function getProperties() {
                 const found = fields.find((f: { key?: string; name?: string; value: unknown }) => f.key === key || f.name === key);
                 return found ? found.value : undefined;
             }
-            return fields[key];
+            return (fields as Record<string, unknown>)[key];
         };
 
         return {
-            id: item.id,
-            sku: item.sku || item.id,
-            name: item.nombre || item.name,
-            description: item.descripcion || item.description,
-            featured: item.destacado || item.featured || false,
-            price: item.precioBase || item.price || 0,
-            currency: item.moneda || item.currency || 'EUR',
-            location: getCF('zona') || getCF('direccion') || 'Sin ubicación',
-            address: getCF('direccion'),
-            operation: getCF('tipo_operacion') || item.operation || 'Venta',
-            image: item.media?.imagenes?.[0] || item.media?.[0] || "https://images.unsplash.com/photo-1560518883-ce09059ee712?auto=format&fit=crop&w=800&q=80",
+            id: item.id as string || String(Math.random()),
+            sku: (item.sku || item.id) as string || String(Math.random()),
+            name: (item.nombre || item.name) as string || "Sin título",
+            description: (item.descripcion || item.description) as string || "",
+            featured: Boolean(item.destacado || item.featured),
+            price: Number(item.precioBase || item.price) || 0,
+            currency: String(item.moneda || item.currency || 'EUR'),
+            location: String(getCF('zona') || getCF('direccion') || 'Sin ubicación'),
+            address: getCF('direccion') ? String(getCF('direccion')) : undefined,
+            operation: String(getCF('tipo_operacion') || item.operation || 'Venta'),
+            image: String(((item.media as Record<string, unknown>)?.imagenes as string[])?.[0] || ((item.media as string[])?.[0]) || "https://images.unsplash.com/photo-1560518883-ce09059ee712?auto=format&fit=crop&w=800&q=80"),
             specs: {
-                beds: parseInt(getCF('habitaciones')) || 0,
-                baths: parseInt(getCF('banos')) || 0,
-                builtArea: parseInt(getCF('superficie_construida')) || parseInt(getCF('superficie')) || 0,
-                totalArea: parseInt(getCF('superficie_total')) || parseInt(getCF('superficie')) || 0,
-                parking: parseInt(getCF('estacionamientos')) || 0,
-                availability: getCF('disponibilidad_inmueble') || getCF('disponibilidad') || 'Disponible'
+                beds: parseInt(String(getCF('habitaciones'))) || 0,
+                baths: parseInt(String(getCF('banos'))) || 0,
+                builtArea: parseInt(String(getCF('superficie_construida'))) || parseInt(String(getCF('superficie'))) || 0,
+                totalArea: parseInt(String(getCF('superficie_total'))) || parseInt(String(getCF('superficie'))) || 0,
+                parking: parseInt(String(getCF('estacionamientos'))) || 0,
+                availability: String(getCF('disponibilidad_inmueble') || getCF('disponibilidad') || 'Disponible')
             },
             active: true,
             raw: item

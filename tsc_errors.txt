@@ -1,0 +1,28 @@
+src/app/admin/properties/[id]/edit/page.tsx(48,34): error TS2322: Type 'Property' is not assignable to type 'Record<string, unknown>'.
+  Index signature for type 'string' is missing in type 'Property'.
+src/app/page.tsx(38,26): error TS2345: Argument of type '{ id: string; name: string; price: number; currency: string; location: string; specs: { beds: number; baths: number; builtArea: number; totalArea: number; parking: number; availability: string; }; operation: string; image: string; }[]' is not assignable to parameter of type 'SetStateAction<Property[]>'.
+  Type '{ id: string; name: string; price: number; currency: string; location: string; specs: { beds: number; baths: number; builtArea: number; totalArea: number; parking: number; availability: string; }; operation: string; image: string; }[]' is not assignable to type 'Property[]'.
+    Type '{ id: string; name: string; price: number; currency: string; location: string; specs: { beds: number; baths: number; builtArea: number; totalArea: number; parking: number; availability: string; }; operation: string; image: string; }' is missing the following properties from type 'Property': sku, description, featured, active
+src/app/page.tsx(39,31): error TS2345: Argument of type '{ id: string; name: string; price: number; currency: string; location: string; specs: { beds: number; baths: number; builtArea: number; totalArea: number; parking: number; availability: string; }; operation: string; image: string; }[]' is not assignable to parameter of type 'SetStateAction<Property[]>'.
+  Type '{ id: string; name: string; price: number; currency: string; location: string; specs: { beds: number; baths: number; builtArea: number; totalArea: number; parking: number; availability: string; }; operation: string; image: string; }[]' is not assignable to type 'Property[]'.
+    Type '{ id: string; name: string; price: number; currency: string; location: string; specs: { beds: number; baths: number; builtArea: number; totalArea: number; parking: number; availability: string; }; operation: string; image: string; }' is missing the following properties from type 'Property': sku, description, featured, active
+src/components/admin/PropertyForm.tsx(17,35): error TS2339: Property 'beds' does not exist on type '{}'.
+src/components/admin/PropertyForm.tsx(18,36): error TS2339: Property 'baths' does not exist on type '{}'.
+src/components/admin/PropertyForm.tsx(19,35): error TS2339: Property 'area' does not exist on type '{}'.
+src/components/admin/PropertyForm.tsx(20,38): error TS2339: Property 'parking' does not exist on type '{}'.
+src/components/admin/PropertyForm.tsx(79,61): error TS2322: Type '{}' is not assignable to type 'string | number | readonly string[] | undefined'.
+src/components/admin/PropertyForm.tsx(83,60): error TS2322: Type '{}' is not assignable to type 'string | number | readonly string[] | undefined'.
+src/components/admin/PropertyForm.tsx(87,46): error TS2322: Type '{}' is not assignable to type 'string | number | readonly string[] | undefined'.
+src/components/admin/PropertyForm.tsx(94,64): error TS2322: Type '{}' is not assignable to type 'string | number | readonly string[] | undefined'.
+src/components/admin/PropertyForm.tsx(98,65): error TS2322: Type '{}' is not assignable to type 'string | number | readonly string[] | undefined'.
+src/components/admin/PropertyForm.tsx(102,55): error TS2322: Type '{}' is not assignable to type 'string | number | readonly string[] | undefined'.
+src/components/admin/PropertyForm.tsx(127,55): error TS2322: Type '{}' is not assignable to type 'string | number | readonly string[] | undefined'.
+src/components/admin/PropertyForm.tsx(132,58): error TS2322: Type '{} | null' is not assignable to type 'boolean | undefined'.
+  Type 'null' is not assignable to type 'boolean | undefined'.
+src/components/admin/PropertyForm.tsx(136,60): error TS2322: Type '{}' is not assignable to type 'boolean | undefined'.
+src/lib/volkern-mcp.ts(76,9): error TS2322: Type '{ id: string; sku: string; name: unknown; description: unknown; featured: {}; price: {}; currency: {}; location: any; address: any; operation: any; image: any; specs: { beds: number; baths: number; builtArea: number; totalArea: number; parking: number; availability: any; }; active: true; raw: Record<...>; }[]' is not assignable to type 'Property[]'.
+  Type '{ id: string; sku: string; name: unknown; description: unknown; featured: {}; price: {}; currency: {}; location: any; address: any; operation: any; image: any; specs: { beds: number; baths: number; builtArea: number; totalArea: number; parking: number; availability: any; }; active: true; raw: Record<...>; }' is not assignable to type 'Property'.
+    Types of property 'name' are incompatible.
+      Type 'unknown' is not assignable to type 'string'.
+src/lib/volkern-mcp.ts(97,92): error TS7053: Element implicitly has an 'any' type because expression of type '0' can't be used to index type '{}'.
+  Property '0' does not exist on type '{}'.

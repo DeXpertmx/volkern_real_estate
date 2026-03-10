@@ -1,8 +1,8 @@
-import { getProperties } from "@/lib/volkern-mcp";
+import { getProperties, Property } from "@/lib/volkern-mcp";
 import { NewPropertyButton, EditPropertyButton } from "./AdminActions";
 
 export default async function AdminPropertiesPage() {
-    let properties = [];
+    let properties: Property[] = [];
     try {
         properties = await getProperties();
     } catch (e) {
@@ -32,7 +32,7 @@ export default async function AdminPropertiesPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {properties.map((prop: any, idx: number) => (
+                        {properties.map((prop: Property, idx: number) => (
                             <tr key={idx} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                                 <td className="py-4 px-6 font-mono text-sm text-slate-500">{prop.sku || prop.id}</td>
                                 <td className="py-4 px-6 font-medium text-slate-900">{prop.name || prop.nombre || 'Sin título'}</td>
