@@ -1,4 +1,5 @@
-import { getProperties } from "@/lib/volkern-mcp";
+import { getProperties, Property } from "@/lib/volkern-mcp";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -7,7 +8,7 @@ export default async function PropertyPage({ params }: { params: { id: string } 
 
     try {
         const allProps = await getProperties();
-        property = allProps.find((p: any) => (p.sku || p.id) === params.id);
+        property = allProps.find((p: Property) => (p.sku || p.id) === params.id) || null;
     } catch (error) {
         console.error("Failed to load property", error);
     }
@@ -16,11 +17,25 @@ export default async function PropertyPage({ params }: { params: { id: string } 
     if (!property) {
         if (params.id === '1') {
             property = {
-                id: '1', name: 'Apartamento Playa', price: 450000, currency: 'EUR', location: 'Málaga', zone: 'Centro',
-                specs: { beds: 2, baths: 2, area: 90, parking: 1 }, operation: 'venta',
+                id: '1',
+                sku: 'mock-1',
+                name: 'Apartamento Playa',
+                price: 450000,
+                currency: 'EUR',
+                location: 'Málaga',
+                operation: 'Venta',
                 description: 'Hermoso apartamento frente al mar con acabados de lujo y vistas espectaculares. Totalmente amueblado y equipado, listo para entrar a vivir.',
-                image: 'https://images.unsplash.com/photo-1560518883-ce09059ee712?auto=format&fit=crop&w=1200&q=80'
-            }
+                image: 'https://images.unsplash.com/photo-1560518883-ce09059ee712?auto=format&fit=crop&w=1200&q=80',
+                specs: {
+                    beds: 2,
+                    baths: 2,
+                    builtArea: 90,
+                    totalArea: 120,
+                    parking: 1,
+                    availability: 'Disponible'
+                },
+                active: true
+            } as Property;
         } else {
             notFound();
         }
@@ -29,7 +44,7 @@ export default async function PropertyPage({ params }: { params: { id: string } 
     const isRent = property.operation?.toLowerCase().includes('renta') || property.operation?.toLowerCase().includes('alquiler');
     const price = property.price || 0;
     const currency = property.currency || 'EUR';
-    const mainImage = property.image || property.media?.imagenes?.[0] || "https://images.unsplash.com/photo-1560518883-ce09059ee712?auto=format&fit=crop&w=1200&q=80";
+    const mainImage = property.image || "https://images.unsplash.com/photo-1560518883-ce09059ee712?auto=format&fit=crop&w=1200&q=80";
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -42,7 +57,12 @@ export default async function PropertyPage({ params }: { params: { id: string } 
                 {/* Left Column: Images & Details */}
                 <div className="lg:col-span-2 space-y-8">
                     <div className="rounded-3xl overflow-hidden bg-slate-100 aspect-video relative group">
-                        <img src={mainImage} alt={property.name || property.nombre} className="w-full h-full object-cover" />
+                        <Image
+                            src={mainImage}
+                            alt={property.name || "Property Image"}
+                            fill
+                            className="object-cover"
+                        />
                         <div className="absolute top-4 left-4 z-10 flex gap-2">
                             <span className={`text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-md ${isRent ? 'bg-indigo-500' : 'bg-rose-500'}`}>
                                 {isRent ? 'Renta' : 'Venta'}
@@ -53,7 +73,7 @@ export default async function PropertyPage({ params }: { params: { id: string } 
                     <div>
                         <div className="flex justify-between items-start mb-4">
                             <div>
-                                <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{property.name || property.nombre}</h1>
+                                <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{property.name}</h1>
                                 <div className="flex items-center text-slate-500">
                                     <svg className="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                                     <span className="text-lg">{property.location || 'Ubicación Premium'} {property.address ? `• ${property.address}` : ''}</span>
@@ -67,19 +87,19 @@ export default async function PropertyPage({ params }: { params: { id: string } 
                             </div>
                         </div>
 
-                        <div className="flex flex-wrap gap-6 py-6 border-y border-slate-200 my-8">
+                        <div className="flex justify-wrap gap-6 py-6 border-y border-slate-200 my-8">
                             <SpecItem icon="/habitaciones.svg" value={property.specs?.beds || 0} label="Habitaciones" />
                             <SpecItem icon="/banos.svg" value={property.specs?.baths || 0} label="Baños" />
-                            <SpecItem icon="/superficie_construida.svg" value={`${property.specs?.builtArea || property.specs?.area || 0} m² C.`} label="Construidos" />
-                            <SpecItem icon="/superficie_total.svg" value={`${property.specs?.totalArea || property.specs?.area || 0} m² T.`} label="Superficie Total" />
-                            {(property.specs?.parking > 0) && (
-                                <SpecItem icon="/estacionamientos.svg" value={property.specs?.parking} label="Estacionamiento" />
+                            <SpecItem icon="/superficie_construida.svg" value={`${property.specs?.builtArea || 0} m² C.`} label="Construidos" />
+                            <SpecItem icon="/superficie_total.svg" value={`${property.specs?.totalArea || 0} m² T.`} label="Superficie Total" />
+                            {property.specs && property.specs.parking > 0 && (
+                                <SpecItem icon="/estacionamientos.svg" value={property.specs.parking} label="Estacionamiento" />
                             )}
                         </div>
 
                         <div className="prose max-w-none text-slate-600">
                             <h3 className="text-xl font-bold text-slate-900 mb-4">Descripción</h3>
-                            <p className="whitespace-pre-line leading-relaxed">{property.description || property.descripcion || 'Sin descripción detallada. Contacte con nuestros agentes para más información sobre esta fantástica propiedad.'}</p>
+                            <p className="whitespace-pre-line leading-relaxed">{property.description || 'Sin descripción detallada. Contacte con nuestros agentes para más información sobre esta fantástica propiedad.'}</p>
                         </div>
                     </div>
                 </div>
@@ -117,11 +137,11 @@ export default async function PropertyPage({ params }: { params: { id: string } 
     );
 }
 
-function SpecItem({ icon, value, label }: { icon: string, value: any, label: string }) {
+function SpecItem({ icon, value, label }: { icon: string, value: string | number, label: string }) {
     return (
         <div className="flex items-center gap-3">
             <div className="bg-blue-50 p-3 rounded-full flex items-center justify-center">
-                <img src={icon} alt={label} className="w-6 h-6 opacity-80" />
+                <Image src={icon} alt={label} width={24} height={24} className="opacity-80" />
             </div>
             <div>
                 <div className="text-xl font-bold text-slate-900">{value}</div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function PropertyForm({ initialData, isEdit = false }: { initialData?: any, isEdit?: boolean }) {
@@ -22,7 +22,7 @@ export default function PropertyForm({ initialData, isEdit = false }: { initialD
         featured: initialData?.featured || false,
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleChange = (e: any) => {
         const { name, value, type } = e.target;
         if (type === 'checkbox') {
             setFormData({ ...formData, [name]: (e.target as HTMLInputElement).checked });
@@ -31,7 +31,7 @@ export default function PropertyForm({ initialData, isEdit = false }: { initialD
         }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         setLoading(true);
 

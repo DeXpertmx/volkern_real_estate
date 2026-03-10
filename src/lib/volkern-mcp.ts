@@ -41,12 +41,36 @@ export interface PropertyFilters {
 
 import { getMockDB } from './mock-db';
 
-export async function getProperties(_filters?: PropertyFilters) {
+export interface Property {
+    id: string;
+    sku: string;
+    name: string;
+    description: string;
+    featured: boolean;
+    price: number;
+    currency: string;
+    location: string;
+    address?: string;
+    operation: string;
+    image: string;
+    specs: {
+        beds: number;
+        baths: number;
+        builtArea: number;
+        totalArea: number;
+        parking: number;
+        availability: string;
+    };
+    active: boolean;
+    raw?: any;
+}
+
+export async function getProperties() {
     const data = await volkernClient.fetchCatalog(100);
     const rawItems = (data.items || data) as any[];
 
     // Map original CRM items
-    let mappedProps = rawItems.map((item: any) => {
+    let mappedProps: Property[] = rawItems.map((item: any) => {
         const getCF = (key: string) => {
             const fields = item.customFieldValues || item.camposPersonalizados || item.customFields || {};
             if (Array.isArray(fields)) {
@@ -87,20 +111,20 @@ export async function getProperties(_filters?: PropertyFilters) {
 
         // Append newly created mock properties
         if (mockDb.created && mockDb.created.length > 0) {
-            mappedProps = [...mockDb.created, ...mappedProps];
+            mappedProps = [...(mockDb.created as Property[]), ...mappedProps];
         }
 
         // Apply updates to existing properties
         if (mockDb.updated && mockDb.updated.length > 0) {
-            mappedProps = mappedProps.map((prop: { sku?: string; id?: string }) => {
-                const update = mockDb.updated.find((u: { sku?: string; id?: string }) => u.sku === prop.sku || u.id === prop.id);
+            mappedProps = mappedProps.map((prop: Property) => {
+                const update = (mockDb.updated as Partial<Property>[]).find((u) => u.sku === prop.sku || u.id === prop.id);
                 if (update) {
                     return { ...prop, ...update };
                 }
                 return prop;
             });
         }
-    } catch (_e) {
+    } catch {
         console.warn("Failed to merge mock database properties");
     }
 

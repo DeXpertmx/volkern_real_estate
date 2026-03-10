@@ -9,7 +9,7 @@ export const authOptions: NextAuthOptions = {
                 email: { label: "Email", type: "text", placeholder: "admin@volkern.com" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials, _req) {
+            async authorize(credentials) {
                 // Mocked admin user for Phase 3
                 if (credentials?.email === "admin@volkern.com" && credentials?.password === "admin") {
                     return { id: "1", name: "Admin Volkern", email: "admin@volkern.com", role: "ADMIN" };
