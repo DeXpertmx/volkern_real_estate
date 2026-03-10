@@ -1,6 +1,8 @@
 import { getProperties, Property } from "@/lib/volkern-mcp";
 import { NewPropertyButton, EditPropertyButton } from "./AdminActions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminPropertiesPage() {
     let properties: Property[] = [];
     try {

@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { headers } from "next/headers";
 
+export const dynamic = 'force-dynamic';
+
 interface Appointment {
     id: string;
     clientName: string;
@@ -26,7 +28,8 @@ async function getAppointments(): Promise<Appointment[]> {
             cache: 'no-store',
         });
 
-        if (!res.ok) {
+        const contentType = res.headers.get("content-type");
+        if (!res.ok || !contentType || !contentType.includes("application/json")) {
             return [];
         }
 

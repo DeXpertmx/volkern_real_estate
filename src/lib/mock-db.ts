@@ -15,34 +15,49 @@ const getDBPath = async () => {
 };
 
 async function initDB() {
-    const { fs, path } = await getServerModules();
-    const dbPath = await getDBPath();
-    const dataDir = path.dirname(dbPath);
+    try {
+        const { fs, path } = await getServerModules();
+        const dbPath = await getDBPath();
+        const dataDir = path.dirname(dbPath);
 
-    if (!fs.existsSync(dataDir)) {
-        fs.mkdirSync(dataDir, { recursive: true });
-    }
+        if (!fs.existsSync(dataDir)) {
+            fs.mkdirSync(dataDir, { recursive: true });
+        }
 
-    if (!fs.existsSync(dbPath)) {
-        fs.writeFileSync(dbPath, JSON.stringify({ created: [], updated: [] }, null, 2));
+        if (!fs.existsSync(dbPath)) {
+            fs.writeFileSync(dbPath, JSON.stringify({ created: [], updated: [] }, null, 2));
+        }
+    } catch (e) {
+        console.warn("MockDB: Could not initialize local filesystem DB (likely read-only environment):", e);
     }
 }
 
 // Helper to read the DB
 export async function getMockDB() {
-    await initDB();
-    const { fs } = await getServerModules();
-    const dbPath = await getDBPath();
-    const data = fs.readFileSync(dbPath, 'utf8');
-    return JSON.parse(data);
+    try {
+        await initDB();
+        const { fs } = await getServerModules();
+        const dbPath = await getDBPath();
+        if (fs.existsSync(dbPath)) {
+            const data = fs.readFileSync(dbPath, 'utf8');
+            return JSON.parse(data);
+        }
+    } catch (e) {
+        console.warn("MockDB: Could not read local DB, using empty fallback:", e);
+    }
+    return { created: [], updated: [] };
 }
 
 // Helper to write to the DB
 export async function saveMockDB(data: { created: unknown[]; updated: unknown[] }) {
-    await initDB();
-    const { fs } = await getServerModules();
-    const dbPath = await getDBPath();
-    fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
+    try {
+        await initDB();
+        const { fs } = await getServerModules();
+        const dbPath = await getDBPath();
+        fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
+    } catch (e) {
+        console.warn("MockDB: Could not save to local DB (read-only environment):", e);
+    }
 }
 
 export async function createMockProperty(property: Record<string, unknown>) {
